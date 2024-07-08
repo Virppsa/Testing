@@ -1,0 +1,88 @@
+1) (A7) -> Insecure Login -> 2 **************************************************************************************
+Log in paspausti ir network surasti užklausą.
+
+{username: "CaptainJack", password: "BlackPearl"}
+password
+: 
+"BlackPearl"
+username
+: 
+"CaptainJack"
+
+
+
+
+2) (A7) -> Password Reset -> 4 (rasti spalvą visiems išvardintiems useriams)******************************************
+Still there are companies which will send the password in plaintext to a user in an e-mail. For a couple of examples 
+you can take a look at http://plaintextoffenders.com/. Here you will find websites which still send you the plaintext 
+password in an e-mail. Not only this should make you question the security of the site but this also means they store 
+your password in plaintext!
+
+
+1)reik atidaryti per burp
+2)Nueiti į proxi 
+3) paspausti request kurį išsiunteme ir right click ir spausti send to intruder
+4) Set attack type: Cluster Bomb
+4)username=§ebgoat§&securityQuestion=§red§
+5)Nueiti į payloads
+6) įvesti add tom, admin, larry
+7)Antrame payload set - įvesti random spalvas ir pradėti attack
+8) Pažiūrime kur didžiausias ilgis ir ten atsakymai
+
+ATS:
+larry - yellow
+admin - green
+tom - purple
+
+atsakymas
+
+
+3) (A1) -> Insecure direct Object References -> 1,2,3,4,5**********************************************************************
+(5 daliai užtenka tik pažiūrėti)
+
+Direct Object References are when an application uses client-provided input to access data & objects.
+
+	2) ----------------------------------------------------------------------------------------------------
+	user/pass	user: tom
+	pass: cat
+	
+	
+	3) ----------------------------------------------------------------------------------------------------
+	naudosime BURP
+	
+	prašo dviejų atributų
+	
+	
+	fn f12
+	
+	
+	turi būti role ir userid
+	
+{role: 3, color: "yellow", size: "small", name: "Tom Cat", userId: "2342384"}
+color
+: 
+"yellow"
+name
+: 
+"Tom Cat"
+role
+: 
+3
+size
+: 
+"small"
+userId
+: 
+"2342384"
+
+
+
+
+ats: WebGoat/IDOR/profile/2342384
+	
+	
+	
+	
+	
+	
+	
